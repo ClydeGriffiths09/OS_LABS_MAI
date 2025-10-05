@@ -1,0 +1,1 @@
+/usr/bin/c++ CMakeFiles/parent.dir/main.cpp.o CMakeFiles/parent.dir/src/parent.cpp.o CMakeFiles/parent.dir/src/child.cpp.o CMakeFiles/parent.dir/src/stringprocessor.cpp.o CMakeFiles/parent.dir/src/os.cpp.o -o bin/parent 

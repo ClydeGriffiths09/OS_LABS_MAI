@@ -1,0 +1,3 @@
+/home/clydegriffiths/OS_LABS_MAI/build/CMakeFiles/parent.dir
+/home/clydegriffiths/OS_LABS_MAI/build/CMakeFiles/edit_cache.dir
+/home/clydegriffiths/OS_LABS_MAI/build/CMakeFiles/rebuild_cache.dir
