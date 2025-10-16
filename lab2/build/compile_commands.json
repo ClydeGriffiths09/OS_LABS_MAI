@@ -1,0 +1,17 @@
+[
+{
+  "directory": "/home/clydegriffiths/OS_LABS_MAI/lab2/build",
+  "command": "/usr/bin/c++  -I/home/clydegriffiths/OS_LABS_MAI/lab2/include  -Werror=maybe-uninitialized -std=gnu++20 -o CMakeFiles/main.dir/main.cpp.o -c /home/clydegriffiths/OS_LABS_MAI/lab2/main.cpp",
+  "file": "/home/clydegriffiths/OS_LABS_MAI/lab2/main.cpp"
+},
+{
+  "directory": "/home/clydegriffiths/OS_LABS_MAI/lab2/build",
+  "command": "/usr/bin/c++  -I/home/clydegriffiths/OS_LABS_MAI/lab2/include  -Werror=maybe-uninitialized -std=gnu++20 -o CMakeFiles/main.dir/src/sort.cpp.o -c /home/clydegriffiths/OS_LABS_MAI/lab2/src/sort.cpp",
+  "file": "/home/clydegriffiths/OS_LABS_MAI/lab2/src/sort.cpp"
+},
+{
+  "directory": "/home/clydegriffiths/OS_LABS_MAI/lab2/build",
+  "command": "/usr/bin/c++  -I/home/clydegriffiths/OS_LABS_MAI/lab2/include  -Werror=maybe-uninitialized -std=gnu++20 -o CMakeFiles/main.dir/src/utils.cpp.o -c /home/clydegriffiths/OS_LABS_MAI/lab2/src/utils.cpp",
+  "file": "/home/clydegriffiths/OS_LABS_MAI/lab2/src/utils.cpp"
+}
+]
