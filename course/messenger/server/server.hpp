@@ -5,6 +5,7 @@
 #include <unordered_map>
 #include <string>
 #include <vector>
+
 #include "../common/message.hpp"
 
 class ChatServer {

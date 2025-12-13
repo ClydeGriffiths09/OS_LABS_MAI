@@ -1,6 +1,7 @@
-#include "client.hpp"
 #include <iostream>
 #include <string>
+
+#include "client.hpp"
 
 int main() {
     std::string login;

@@ -1,5 +1,6 @@
-#include "server.hpp"
 #include <iostream>
+
+#include "server.hpp"
 
 int main() {
     try {

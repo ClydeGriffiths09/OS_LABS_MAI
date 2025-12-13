@@ -4,7 +4,9 @@
 #include <string>
 #include <thread>
 #include <atomic>
+
 #include "../common/message.hpp"
+#include "thread.hpp"
 
 class ChatClient {
 private:
@@ -12,6 +14,7 @@ private:
     zmq::socket_t dealer;
     std::string my_login;
     std::atomic<bool> running{true};
+    Thread* receiver_thread = nullptr;
 
     void receiveLoop();
 

@@ -1,6 +1,7 @@
-#include "server.hpp"
 #include <iostream>
 #include <chrono>
+
+#include "server.hpp"
 
 void ChatServer::initDatabase() {
     if (sqlite3_open("chat_history.db", &db) != SQLITE_OK) {
@@ -29,7 +30,9 @@ ChatServer::ChatServer(const std::string& endpoint)
 }
 
 ChatServer::~ChatServer() {
-    if (db) sqlite3_close(db);
+    if (db) {
+        sqlite3_close(db);
+    }
 }
 
 void ChatServer::saveMessageToDB(const std::string& from, const std::string& to, const std::string& text) {
@@ -39,7 +42,9 @@ void ChatServer::saveMessageToDB(const std::string& from, const std::string& to,
 
     const char* sql = "INSERT INTO messages (sender, receiver, text, timestamp) VALUES (?, ?, ?, ?);";
     sqlite3_stmt* stmt;
-    if (sqlite3_prepare_v2(db, sql, -1, &stmt, nullptr) != SQLITE_OK) return;
+    if (sqlite3_prepare_v2(db, sql, -1, &stmt, nullptr) != SQLITE_OK) {
+        return;
+    }
 
     sqlite3_bind_text(stmt, 1, from.c_str(), -1, SQLITE_STATIC);
     sqlite3_bind_text(stmt, 2, to.c_str(), -1, SQLITE_STATIC);
@@ -58,7 +63,9 @@ std::vector<IncomingMessage> ChatServer::getHistoryFromDB(const std::string& use
         ORDER BY timestamp ASC;
     )";
     sqlite3_stmt* stmt;
-    if (sqlite3_prepare_v2(db, sql, -1, &stmt, nullptr) != SQLITE_OK) return res;
+    if (sqlite3_prepare_v2(db, sql, -1, &stmt, nullptr) != SQLITE_OK) {
+        return res;
+    }
 
     sqlite3_bind_text(stmt, 1, user1.c_str(), -1, SQLITE_STATIC);
     sqlite3_bind_text(stmt, 2, user2.c_str(), -1, SQLITE_STATIC);
@@ -83,7 +90,9 @@ std::vector<IncomingMessage> ChatServer::searchInDB(const std::string& user, con
         ORDER BY timestamp DESC;
     )";
     sqlite3_stmt* stmt;
-    if (sqlite3_prepare_v2(db, sql, -1, &stmt, nullptr) != SQLITE_OK) return res;
+    if (sqlite3_prepare_v2(db, sql, -1, &stmt, nullptr) != SQLITE_OK) {
+        return res;
+    }
 
     sqlite3_bind_text(stmt, 1, user.c_str(), -1, SQLITE_STATIC);
     sqlite3_bind_text(stmt, 2, user.c_str(), -1, SQLITE_STATIC);
@@ -114,7 +123,10 @@ void ChatServer::deliverMessage(const std::string& to_login, const std::string& 
 
 void ChatServer::run() {
     while (true) {
-        zmq::message_t identity, empty, data;
+        zmq::message_t identity;
+        zmq::message_t empty;
+        zmq::message_t data;
+
         router.recv(identity);
         router.recv(empty);
         router.recv(data);

@@ -1,5 +1,6 @@
-#include "client.hpp"
 #include <iostream>
+
+#include "client.hpp"
 
 ChatClient::ChatClient(const std::string& server_addr)
     : ctx(1), dealer(ctx, zmq::socket_type::dealer) {
@@ -70,10 +71,19 @@ void ChatClient::receiveLoop() {
 }
 
 void ChatClient::startReceiving() {
-    std::thread([this]() { receiveLoop(); }).detach();
+    running = true;
+    receiver_thread = new Thread([this]() {
+        this->receiveLoop();
+    });
+    receiver_thread->start();
 }
 
 void ChatClient::stop() {
     running = false;
     dealer.close();
+    if (receiver_thread) {
+        receiver_thread->join();
+        delete receiver_thread;
+        receiver_thread = nullptr;
+    }
 }
