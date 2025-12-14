@@ -42,6 +42,7 @@ void ChatServer::saveMessageToDB(const std::string& from, const std::string& to,
 
     const char* sql = "INSERT INTO messages (sender, receiver, text, timestamp) VALUES (?, ?, ?, ?);";
     sqlite3_stmt* stmt;
+    
     if (sqlite3_prepare_v2(db, sql, -1, &stmt, nullptr) != SQLITE_OK) {
         return;
     }

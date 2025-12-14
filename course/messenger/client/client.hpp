@@ -2,11 +2,10 @@
 
 #include <zmq.hpp>
 #include <string>
-#include <thread>
 #include <atomic>
 
 #include "../common/message.hpp"
-#include "thread.hpp"
+#include "../thread/thread.hpp"
 
 class ChatClient {
 private:
