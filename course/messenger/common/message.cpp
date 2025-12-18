@@ -23,6 +23,13 @@ std::string serialize(const IncomingMessage& m) {
     return "MSG:" + m.from + "|" + m.text;
 }
 
+std::string serialize(const LogoutRequest& r) {
+    return "LOGOUT:" + r.user;
+}
+
+std::string serialize(const ErrorMessage& e) {
+    return "ERROR:" + e.text;
+}
 
 bool deserializeLogin(const std::string& s, LoginRequest& r) {
     if (s.size() < 7 || s.substr(0, 6) != "LOGIN:") {
@@ -65,6 +72,14 @@ bool deserializeSearch(const std::string& s, SearchRequest& r) {
     if (p == std::string::npos) return false;
     r.user = s.substr(7, p - 7);
     r.query = s.substr(p + 1);
+    return true;
+}
+
+bool deserializeLogout(const std::string& s, LogoutRequest& r) {
+    if (s.size() < 8 || s.substr(0, 7) != "LOGOUT:") {
+        return false;
+    }
+    r.user = s.substr(7);
     return true;
 }
 

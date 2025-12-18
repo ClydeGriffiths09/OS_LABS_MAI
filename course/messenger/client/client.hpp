@@ -24,5 +24,6 @@ public:
     void requestHistory(const std::string& with);
     void requestSearch(const std::string& query);
     void startReceiving();
+    void logout();
     void stop();
 };

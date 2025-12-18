@@ -38,10 +38,18 @@ void ChatClient::requestSearch(const std::string& query) {
 }
 
 void ChatClient::receiveLoop() {
+    zmq::pollitem_t items[] = {{static_cast<void*>(dealer), 0, ZMQ_POLLIN, 0}};
+
     while (running) {
-        zmq::message_t empty, data;
-        if (dealer.recv(empty) && dealer.recv(data)) {
+        zmq::poll(items, 1, 100);
+
+        if (items[0].revents & ZMQ_POLLIN) {
+            zmq::message_t empty, data;
+            dealer.recv(empty);
+            dealer.recv(data);
+
             std::string str(static_cast<char*>(data.data()), data.size());
+
             if (str.substr(0, 4) == "MSG:") {
                 size_t p = str.find('|', 4);
                 if (p != std::string::npos) {
@@ -59,12 +67,16 @@ void ChatClient::receiveLoop() {
                 }
             }
             else if (str.substr(0, 14) == "SEARCH_RESULT:") {
-                size_t p = str.find('|', 13);
+                size_t p = str.find('|', 14);
                 if (p != std::string::npos) {
-                    std::string from = str.substr(13, p - 13);
+                    std::string from = str.substr(14, p - 14);
                     std::string text = str.substr(p + 1);
                     std::cout << "\n[SEARCH] " << from << ": " << text << "\nYou: " << std::flush;
                 }
+            } 
+            else if (str.substr(0, 6) == "ERROR:") {
+                std::string error_text = str.substr(6);
+                std::cout << "\n[ERROR] " << error_text << "\nYou: " << std::flush;
             }
         }
     }
@@ -78,9 +90,17 @@ void ChatClient::startReceiving() {
     receiver_thread->start();
 }
 
+void ChatClient::logout() {
+    if (!my_login.empty()) {
+        std::string msg = MessageUtils::serialize(LogoutRequest{my_login});
+        zmq::message_t empty, data(msg);
+        dealer.send(empty, zmq::send_flags::sndmore);
+        dealer.send(data, zmq::send_flags::none);
+    }
+}
+
 void ChatClient::stop() {
     running = false;
-    dealer.close();
     if (receiver_thread) {
         receiver_thread->join();
         delete receiver_thread;

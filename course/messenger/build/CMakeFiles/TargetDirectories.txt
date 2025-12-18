@@ -1,0 +1,4 @@
+/home/clydegriffiths/OS_LABS_MAI/test/messenger/build/CMakeFiles/server.dir
+/home/clydegriffiths/OS_LABS_MAI/test/messenger/build/CMakeFiles/client.dir
+/home/clydegriffiths/OS_LABS_MAI/test/messenger/build/CMakeFiles/edit_cache.dir
+/home/clydegriffiths/OS_LABS_MAI/test/messenger/build/CMakeFiles/rebuild_cache.dir

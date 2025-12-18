@@ -145,9 +145,15 @@ void ChatServer::run() {
         else if (data_str.substr(0, 8) == "MESSAGE:") {
             SendMessageRequest req;
             if (MessageUtils::deserializeMessage(data_str, req)) {
-                saveMessageToDB(req.from, req.to, req.text);
-                auto msg = MessageUtils::serialize(IncomingMessage{req.from, req.text});
-                deliverMessage(req.to, msg);
+                if (online_users.find(req.to) != online_users.end()) {
+                    saveMessageToDB(req.from, req.to, req.text);
+                    auto msg = MessageUtils::serialize(IncomingMessage{req.from, req.text});
+                    deliverMessage(req.to, msg);
+                } else {
+                    ErrorMessage err{"User is offline: " + req.to};
+                    auto err_msg = MessageUtils::serialize(err);
+                    deliverMessage(req.from, err_msg);
+                }
             }
         }
         else if (data_str.substr(0, 8) == "HISTORY:") {
@@ -168,6 +174,13 @@ void ChatServer::run() {
                     std::string msg = "SEARCH_RESULT:" + m.from + "|" + m.text;
                     deliverMessage(req.user, msg);
                 }
+            }
+        } 
+        else if (data_str.substr(0, 7) == "LOGOUT:") {
+            LogoutRequest req;
+            if (MessageUtils::deserializeLogout(data_str, req)) {
+                online_users.erase(req.user);
+                std::cout << "User logged out: " << req.user << "\n";
             }
         }
     }

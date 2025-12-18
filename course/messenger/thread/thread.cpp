@@ -2,12 +2,15 @@
 #include <pthread.h>
 #include <cstring>
 
-Thread::Thread(ThreadFunc f) : func(std::move(f)) {}
+Thread::Thread(ThreadFunc f) : func(std::move(f)) {
+    thread_id_ptr = new pthread_t;
+}
 
 Thread::~Thread() {
     if (is_running) {
         join();
     }
+    delete thread_id_ptr;
 }
 
 void* Thread::threadEntry(void* arg) {

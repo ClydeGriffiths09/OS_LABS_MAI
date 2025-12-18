@@ -2,7 +2,6 @@
 
 #include <string>
 
-// --- Запросы от клиента ---
 struct LoginRequest {
     std::string user;
 };
@@ -28,6 +27,14 @@ struct IncomingMessage {
     std::string text;
 };
 
+struct LogoutRequest {
+    std::string user;
+};
+
+struct ErrorMessage {
+    std::string text;
+};
+
 
 namespace MessageUtils {
 
@@ -36,10 +43,13 @@ std::string serialize(const SendMessageRequest& r);
 std::string serialize(const HistoryRequest& r);
 std::string serialize(const SearchRequest& r);
 std::string serialize(const IncomingMessage& m);
+std::string serialize(const LogoutRequest& r);
+std::string serialize(const ErrorMessage& e);
 
 bool deserializeLogin(const std::string& s, LoginRequest& r);
 bool deserializeMessage(const std::string& s, SendMessageRequest& r);
 bool deserializeHistory(const std::string& s, HistoryRequest& r);
 bool deserializeSearch(const std::string& s, SearchRequest& r);
+bool deserializeLogout(const std::string& s, LogoutRequest& r);
 
 }
